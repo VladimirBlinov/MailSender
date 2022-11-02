@@ -1,1 +1,3 @@
-Bob;Marley;1970-07-10;b.b.blinov@yandex.ru
+Bob;Marley;1970-07-10;bob@test.org
+Michel;Jackson;1960-01-11;mich@test.org
+Elvis;Presley;1950-03-22;el@test.org
