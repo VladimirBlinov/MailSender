@@ -1,0 +1,5 @@
+smtp:
+  from: "test@test.org"
+  pass: "passs"
+  host: "smtp.test.com"
+  port: "587"
