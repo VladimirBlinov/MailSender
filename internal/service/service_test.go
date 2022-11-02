@@ -8,6 +8,7 @@ import (
 	"github.com/VladimirBlinov/MailSender/internal/store/filestore"
 	"github.com/VladimirBlinov/MailSender/pkg/email/smtpsender"
 	smtpmock "github.com/mocktools/go-smtp-mock"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -50,8 +51,9 @@ func Test_ServiceRunBroadcast(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			store := filestore.NewStore(tc.broadcastListPath)
-			srvc := service.NewService(store, sender)
+			logger := logrus.New()
+			store := filestore.NewStore(tc.broadcastListPath, logger)
+			srvc := service.NewService(store, sender, logger)
 
 			assert.NoError(t, srvc.RunBroadcast(tc.emailTempl, tc.subject, tc.delay))
 			server.Messages()

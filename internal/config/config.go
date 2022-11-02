@@ -5,10 +5,10 @@ import (
 )
 
 type SMTPConfig struct {
-	From string
-	Pass string 
-	Host string 
-	Port int    
+	From string `mapstructure:"from"`
+	Pass string `mapstructure:"pass"`
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
 }
 
 type Config struct {
@@ -25,23 +25,20 @@ func GetConf(configPath string) (*Config, error) {
 	viper.SetConfigType("yaml")
 
 	err := viper.ReadInConfig()
-
 	if err != nil {
 		return nil, err
 	}
 
-	conf := &Config{
-		&SMTPConfig{
-			From: viper.GetString("smtp.from"),
-			Pass: viper.GetString("smtp.pass"),
-			Pass: viper.GetString("smtp.pass"),
-		}
+	smtpconf := &SMTPConfig{
+		From: viper.GetString("smtp.from"),
+		Pass: viper.GetString("smtp.pass"),
+		Host: viper.GetString("smtp.host"),
+		Port: viper.GetInt("smtp.port"),
 	}
 
-	// err = viper.Unmarshal(conf)
-	// if err != nil {
-	// 	return nil, err
-	// }
+	conf := &Config{
+		SMTP: *smtpconf,
+	}
 
 	return conf, nil
 }

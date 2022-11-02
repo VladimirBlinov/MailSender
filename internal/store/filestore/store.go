@@ -1,15 +1,20 @@
 package filestore
 
-import "github.com/VladimirBlinov/MailSender/internal/store"
+import (
+	"github.com/VladimirBlinov/MailSender/internal/store"
+	"github.com/sirupsen/logrus"
+)
 
 type Store struct {
 	filePath       string
 	subscriberRepo *SubscriberRepo
+	logger         *logrus.Logger
 }
 
-func NewStore(fp string) *Store {
+func NewStore(fp string, logger *logrus.Logger) *Store {
 	return &Store{
 		filePath: fp,
+		logger:   logger,
 	}
 }
 

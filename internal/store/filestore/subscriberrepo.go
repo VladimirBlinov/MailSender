@@ -3,7 +3,6 @@ package filestore
 import (
 	"bufio"
 	"io"
-	"log"
 	"os"
 	"strings"
 	"time"
@@ -18,7 +17,7 @@ type SubscriberRepo struct {
 func (sr *SubscriberRepo) GetSubscribers() ([]*model.Subscriber, error) {
 	file, err := os.Open(sr.store.filePath)
 	if err != nil {
-		log.Fatal(err)
+		sr.store.logger.Fatal(err)
 	}
 	defer file.Close()
 
@@ -32,7 +31,7 @@ func (sr *SubscriberRepo) GetSubscribers() ([]*model.Subscriber, error) {
 				break
 			}
 
-			log.Fatalf("read file line error: %v", err)
+			sr.store.logger.Fatalf("read file line error: %v", err)
 			return nil, err
 		}
 
@@ -48,7 +47,7 @@ func (sr *SubscriberRepo) GetSubscribers() ([]*model.Subscriber, error) {
 		s.BirthDay = bdParsed
 
 		if err := s.Validate(); err != nil {
-			log.Printf("read file line error: %v", err)
+			sr.store.logger.Errorf("read file line error: %v", err)
 			continue
 		}
 

@@ -1,23 +1,26 @@
 package service
 
 import (
-	"log"
 	"sync"
 	"time"
 
 	"github.com/VladimirBlinov/MailSender/internal/store"
 	"github.com/VladimirBlinov/MailSender/pkg/email"
+	"github.com/sirupsen/logrus"
 )
 
 type Service struct {
 	Store  store.Store
 	Sender email.Sender
+	Logger *logrus.Logger
 }
 
-func NewService(store store.Store, sender email.Sender) *Service {
+func NewService(store store.Store, sender email.Sender, logger *logrus.Logger) *Service {
+
 	return &Service{
 		Store:  store,
 		Sender: sender,
+		Logger: logger,
 	}
 }
 
@@ -39,12 +42,12 @@ func (s *Service) RunBroadcast(emailTempl string, subject string, delay int) err
 			sendInput := email.SendEmailInput{Subject: subject, To: sub.Email}
 
 			if err := sendInput.GenerateBodyFromHTML(emailTempl, sub); err != nil {
-				log.Printf("Error generate email to %s", sub.Email)
+				s.Logger.Errorf("Service error: Error generate email to %s: %s", sub.Email, err)
 			}
 
 			err = s.Sender.Send(sendInput)
 			if err != nil {
-				log.Printf("Error sent to email %s", sub.Email)
+				s.Logger.Errorf("Service error: Error sent to email %s: %s", sub.Email, err)
 			}
 		}(wg)
 

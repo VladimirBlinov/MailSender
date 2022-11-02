@@ -17,7 +17,7 @@ func Run(cfg *config.Config) {
 		return
 	}
 
-	store := filestore.NewStore(cfg.BroadcastListPath)
-	srvc := service.NewService(store, emailSender)
+	store := filestore.NewStore(cfg.BroadcastListPath, logger)
+	srvc := service.NewService(store, emailSender, logger)
 	srvc.RunBroadcast(cfg.TemplatePath, cfg.Subject, cfg.Delay)
 }
