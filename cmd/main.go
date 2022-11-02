@@ -17,7 +17,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&configPath, "config-path", "configs/emailservice.yml", "path to config file")
+	flag.StringVar(&configPath, "config-path", "configs/", "path to config file")
 	flag.StringVar(&subject, "subject", "new subject", "broadcast subject")
 	flag.StringVar(&templatePath, "template-path", "template/template.html", "path to template file")
 	flag.StringVar(&broadcastListPath, "broadcastList-path", "broadcastList.txt", "path to broadcastList file")
